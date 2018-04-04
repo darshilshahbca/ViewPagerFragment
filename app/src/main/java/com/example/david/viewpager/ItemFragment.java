@@ -13,11 +13,12 @@ import java.text.NumberFormat;
 public class ItemFragment extends Fragment {
 
     private Product mProduct;
+    public static final String PRODUCT_KEY = "product_key";
 
     public static ItemFragment newInstance(Product product) {
 
         Bundle args = new Bundle();
-
+        args.putParcelable(PRODUCT_KEY, product);
         ItemFragment fragment = new ItemFragment();
         fragment.setArguments(args);
         return fragment;
@@ -32,6 +33,14 @@ public class ItemFragment extends Fragment {
 
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_detail, container, false);
+
+        Bundle args = getArguments();
+        if (args == null){
+            throw new AssertionError();
+        }
+
+        mProduct = args.getParcelable(PRODUCT_KEY);
+        if(mProduct == null) throw new AssertionError();
 
 //      display text and image
         TextView nameText = (TextView) rootView.findViewById(R.id.nameText);

@@ -1,6 +1,9 @@
 package com.example.david.viewpager;
 
-public class Product {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Product implements Parcelable {
 
     private final String productId;
     private final String name;
@@ -30,4 +33,35 @@ public class Product {
         this.price = price;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.productId);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeDouble(this.price);
+    }
+
+    protected Product(Parcel in) {
+        this.productId = in.readString();
+        this.name = in.readString();
+        this.description = in.readString();
+        this.price = in.readDouble();
+    }
+
+    public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel source) {
+            return new Product(source);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 }
